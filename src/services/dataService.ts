@@ -1,15 +1,9 @@
 import mongoose from 'mongoose';
 import { SensorDataModel, memoryStorage } from '../db/mongodb';
-import { AwsIotClient } from './awsIotClient';
-
-let awsClient: AwsIotClient | null = null;
 
 export const initAwsClient = async () => {
-  const awsEndpoint = process.env.AWS_IOT_ENDPOINT;
-  if (awsEndpoint) {
-    awsClient = new AwsIotClient(awsEndpoint, process.env.AWS_IOT_CLIENT_ID || 'pollution-monitor');
-    await awsClient.connect().catch(err => console.warn("AWS IoT Core connection failed:", err.message));
-  }
+  // AWS IoT Client removed as per user request for standalone mode
+  return Promise.resolve();
 };
 
 export const ingestSensorData = async (data: any) => {
@@ -36,11 +30,6 @@ export const ingestSensorData = async (data: any) => {
     // 3. Fallback to in-memory
     memoryStorage.push(enrichedData);
     if (memoryStorage.length > 500) memoryStorage.shift();
-  }
-
-  // 4. Publish to AWS IoT Core if configured
-  if (awsClient) {
-    awsClient.publishData('airpollution/sensors/data', enrichedData);
   }
 
   return enrichedData;
