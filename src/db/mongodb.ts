@@ -45,7 +45,11 @@ export async function connectDB() {
     return;
   }
   try {
-    await mongoose.connect(uri);
+    // Add timeouts so Vercel doesn't kill the function after 10s if IP is not whitelisted in Atlas
+    await mongoose.connect(uri, {
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 5000,
+    });
     console.log('Connected to MongoDB Atlas');
   } catch (error) {
     console.error('MongoDB connection error:', error);
