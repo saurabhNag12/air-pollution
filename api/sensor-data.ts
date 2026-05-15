@@ -1,20 +1,12 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import mongoose from 'mongoose';
-import { SensorDataModel, memoryStorage, connectDB } from '../src/db/mongodb';
-
-let dbInitialized = false;
-
-async function ensureDB() {
-  if (!dbInitialized) {
-    await connectDB();
-    dbInitialized = true;
-  }
-}
+import { SensorDataModel, memoryStorage } from '../src/db/mongodb';
+import { ensureDB, setCors } from './_utils';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: "Method not allowed" });
-  }
+  setCors(res);
+  if (req.method === 'OPTIONS') return res.status(200).end();
+  if (req.method !== 'POST') return res.status(405).json({ error: "Method not allowed" });
 
   await ensureDB();
 
@@ -41,6 +33,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     res.status(201).json(enrichedData);
   } catch (error) {
+    console.error("sensor-data error:", error);
     res.status(400).json({ error: "Invalid sensor data" });
   }
 }

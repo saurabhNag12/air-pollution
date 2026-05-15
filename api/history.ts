@@ -1,17 +1,12 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import mongoose from 'mongoose';
-import { SensorDataModel, memoryStorage, connectDB } from '../src/db/mongodb';
-
-let dbInitialized = false;
-
-async function ensureDB() {
-  if (!dbInitialized) {
-    await connectDB();
-    dbInitialized = true;
-  }
-}
+import { SensorDataModel, memoryStorage } from '../src/db/mongodb';
+import { ensureDB, setCors } from './_utils';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+  setCors(res);
+  if (req.method === 'OPTIONS') return res.status(200).end();
+
   await ensureDB();
 
   try {
@@ -36,6 +31,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     res.json(history);
   } catch (error) {
+    console.error("history error:", error);
     res.status(500).json({ error: "Failed to fetch history" });
   }
 }
