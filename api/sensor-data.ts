@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import mongoose from 'mongoose';
-import { SensorDataModel, memoryStorage } from '../src/db/mongodb';
-import { ensureDB, setCors } from './_utils';
+import { SensorDataModel, memoryStorage } from '../src/db/mongodb.js';
+import { ensureDB, setCors } from './_utils.js';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   setCors(res);

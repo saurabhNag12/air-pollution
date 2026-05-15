@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { SensorDataModel, memoryStorage, connectDB } from '../src/db/mongodb';
+import { SensorDataModel, memoryStorage, connectDB } from '../src/db/mongodb.js';
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 let dbInitialized = false;

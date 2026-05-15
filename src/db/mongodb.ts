@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose';
-import { SensorData } from '../types';
+import { SensorData } from '../types.js';
 
 const sensorDataSchema = new Schema<SensorData & Document>({
   deviceId: { type: String, required: true },
