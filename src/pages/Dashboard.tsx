@@ -32,6 +32,7 @@ export const Dashboard: React.FC = () => {
     try {
       await sensorApi.recalibrate();
       await fetchData();
+      window.location.reload(); // Refresh to ensure all locations from backend are shown
     } catch (error) {
       console.error("Recalibration failed:", error);
     } finally {
