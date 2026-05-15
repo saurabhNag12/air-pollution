@@ -20,21 +20,27 @@ export const memoryStorage: any[] = [];
 
 // Seed initial data so the dashboard isn't empty on start
 const seedData = () => {
-  const location = 'Bangalore';
-  for (let i = 0; i < 10; i++) {
-    const pm25 = Math.floor(Math.random() * 80) + 30;
-    memoryStorage.push({
-      deviceId: `blr-sensor-${i + 1}`,
-      location: location,
-      pm25: pm25,
-      co2: Math.floor(Math.random() * 300) + 400,
-      temperature: Math.floor(Math.random() * 5) + 24,
-      humidity: Math.floor(Math.random() * 15) + 50,
-      smoke: Math.floor(Math.random() * 10),
-      status: pm25 > 150 ? 'Dangerous' : pm25 > 50 ? 'Moderate' : 'Safe',
-      timestamp: new Date(Date.now() - (10 - i) * 60000).toISOString()
-    });
-  }
+  const locations = ['Bangalore', 'Delhi', 'Mumbai', 'Chennai'];
+  
+  locations.forEach((location, locIndex) => {
+    for (let i = 0; i < 5; i++) {
+      let pm25;
+      if (location === 'Delhi') pm25 = Math.floor(Math.random() * 200) + 150; // Delhi usually higher
+      else pm25 = Math.floor(Math.random() * 80) + 30;
+      
+      memoryStorage.push({
+        deviceId: `${location.substring(0, 3).toLowerCase()}-sensor-${i + 1}`,
+        location: location,
+        pm25: pm25,
+        co2: Math.floor(Math.random() * 300) + 400,
+        temperature: Math.floor(Math.random() * 10) + 22,
+        humidity: Math.floor(Math.random() * 20) + 40,
+        smoke: Math.floor(Math.random() * 15),
+        status: pm25 > 150 ? 'Dangerous' : pm25 > 50 ? 'Moderate' : 'Safe',
+        timestamp: new Date(Date.now() - (5 - i) * 60000).toISOString()
+      });
+    }
+  });
 };
 seedData();
 

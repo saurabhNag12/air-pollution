@@ -1,14 +1,20 @@
 import { ingestSensorData } from './dataService';
 
-const LOCATIONS = ['Bangalore'];
-const DEVICE_IDS = ['blr-sensor-1', 'blr-sensor-2', 'blr-sensor-3'];
+const LOCATIONS = ['Bangalore', 'Delhi', 'Mumbai', 'Chennai'];
+const DEVICE_IDS = [
+  'ban-sensor-1', 'ban-sensor-2',
+  'del-sensor-1', 'del-sensor-2',
+  'mum-sensor-1', 'mum-sensor-2',
+  'che-sensor-1', 'che-sensor-2'
+];
 
 export const startSimulation = async () => {
   console.log('Starting IoT Sensor Simulation...');
   
   setInterval(async () => {
     const deviceId = DEVICE_IDS[Math.floor(Math.random() * DEVICE_IDS.length)];
-    const location = LOCATIONS[DEVICE_IDS.indexOf(deviceId)];
+    const locationPrefix = deviceId.substring(0, 3);
+    const location = LOCATIONS.find(l => l.toLowerCase().startsWith(locationPrefix)) || 'Bangalore';
     
     const pm25 = Math.floor(Math.random() * 250);
     const co2 = Math.floor(Math.random() * 600) + 300;

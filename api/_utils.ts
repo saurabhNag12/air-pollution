@@ -12,12 +12,19 @@ export async function ensureDB() {
   }
 }
 
-/** Generate realistic Bangalore sensor data */
+/** Generate realistic sensor data for multiple cities */
 export function generateReading(deviceId: string) {
-  const pm25 = Math.floor(Math.random() * 200) + 10;
+  const locations = ['Bangalore', 'Delhi', 'Mumbai', 'Chennai'];
+  const locPrefix = deviceId.substring(0, 3);
+  const location = locations.find(l => l.toLowerCase().startsWith(locPrefix)) || 'Bangalore';
+  
+  let pm25;
+  if (location === 'Delhi') pm25 = Math.floor(Math.random() * 200) + 150;
+  else pm25 = Math.floor(Math.random() * 200) + 10;
+
   return {
     deviceId,
-    location: 'Bangalore',
+    location,
     pm25,
     co2: Math.floor(Math.random() * 400) + 350,
     temperature: Math.floor(Math.random() * 8) + 22,

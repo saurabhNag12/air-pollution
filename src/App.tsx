@@ -37,7 +37,7 @@ export default function App() {
           <div className="flex gap-4 items-center">
             <div className="hidden sm:flex flex-col text-right">
               <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Current Region</span>
-              <span className="text-sm font-medium">Asia-Pacific (Bangalore)</span>
+              <span className="text-sm font-medium">India (National Monitors)</span>
             </div>
             <div className="h-8 w-px bg-white/10"></div>
             <button className="relative group">

@@ -38,7 +38,7 @@ export const Analytics: React.FC = () => {
         const trend = lastReadings[lastReadings.length - 1].pm25 > lastReadings[0].pm25 ? 'rising' : 'falling';
         
         const forecast = trend === 'rising' 
-          ? `WARNING: PM 2.5 levels are on a upward trajectory in Bangalore. We predict a 15% increase in pollution over the next 4 hours. Local health advisory: Minimize outdoor activities.`
+          ? `WARNING: PM 2.5 levels are on a upward trajectory across monitored cities. We predict a 15% increase in pollution over the next 4 hours. Local health advisory: Minimize outdoor activities.`
           : `OPTIMISTIC: Pollution levels are stabilizing. Current trends suggest a 10% improvement in air quality as CO2 levels harmonize. Predicted AQI for tomorrow: Safe.`;
           
         setPrediction(forecast);
@@ -88,7 +88,7 @@ export const Analytics: React.FC = () => {
       <header className="flex justify-between items-end">
         <div>
           <h2 className="text-3xl font-bold text-white mb-2">Analytics & Trends</h2>
-          <p className="text-gray-400">Deep dive into Bangalore's environmental patterns</p>
+          <p className="text-gray-400">Deep dive into national environmental patterns</p>
         </div>
         <button 
           onClick={generatePrediction}
@@ -110,7 +110,7 @@ export const Analytics: React.FC = () => {
             <TrendingUp className="w-6 h-6" />
           </div>
           <div>
-            <h4 className="text-indigo-400 font-bold uppercase tracking-widest text-xs mb-1">Local AI Prediction (Bangalore)</h4>
+            <h4 className="text-indigo-400 font-bold uppercase tracking-widest text-xs mb-1">Local AI Prediction</h4>
             <p className="text-white leading-relaxed">{prediction}</p>
           </div>
         </motion.div>
@@ -145,7 +145,7 @@ export const Analytics: React.FC = () => {
         </div>
 
         <div className="p-6 rounded-2xl bg-white/5 border border-white/10">
-          <h3 className="text-lg font-bold text-white mb-6">Average PM2.5 (Bangalore Zone)</h3>
+          <h3 className="text-lg font-bold text-white mb-6">Average PM2.5 (National Zone)</h3>
           <div className="h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={barData}>
