@@ -11,6 +11,7 @@ export const Dashboard: React.FC = () => {
   const [history, setHistory] = useState<SensorData[]>([]);
   const [loading, setLoading] = useState(true);
   const [isRecalibrating, setIsRecalibrating] = useState(false);
+  const [selectedCity, setSelectedCity] = useState<string>('All');
 
   const fetchData = async () => {
     try {
@@ -54,8 +55,18 @@ export const Dashboard: React.FC = () => {
     );
   }
 
+  const availableCities = Array.from(new Set(latestData.map(d => d.location)));
+
+  const filteredLatest = selectedCity === 'All' 
+    ? latestData 
+    : latestData.filter(d => d.location === selectedCity);
+    
+  const filteredHistory = selectedCity === 'All'
+    ? history
+    : history.filter(d => d.location === selectedCity);
+
   // Use the first sensor as the primary focus for the main dashboard metrics
-  const mainSensor = latestData[0] || {
+  const mainSensor = filteredLatest[0] || {
     pm25: 0, co2: 0, temperature: 0, humidity: 0, smoke: 0, status: 'Safe', location: 'Unknown'
   };
 
@@ -71,6 +82,24 @@ export const Dashboard: React.FC = () => {
       animate={{ opacity: 1, scale: 1 }}
       className="space-y-6"
     >
+      {/* Header and City Selector */}
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-xl font-bold text-white">Live Dashboard</h2>
+        <div className="flex items-center gap-3">
+          <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Select Zone</label>
+          <select 
+            value={selectedCity} 
+            onChange={(e) => setSelectedCity(e.target.value)}
+            className="bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 appearance-none min-w-[150px]"
+          >
+            <option value="All">All Locations</option>
+            {availableCities.map(city => (
+              <option key={city} value={city}>{city}</option>
+            ))}
+          </select>
+        </div>
+      </div>
+
       {/* Metric Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard 
@@ -129,7 +158,7 @@ export const Dashboard: React.FC = () => {
             </div>
 
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={history}>
+              <AreaChart data={filteredHistory}>
                 <defs>
                   <linearGradient id="colorPm" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3}/>
@@ -165,7 +194,7 @@ export const Dashboard: React.FC = () => {
           <div className="bg-white/5 border border-white/10 rounded-2xl p-6 flex flex-col gap-4">
             <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500">Live Sensors</h2>
             <div className="flex flex-col gap-3">
-              {latestData.slice(0, 3).map((sensor) => (
+              {filteredLatest.slice(0, 3).map((sensor) => (
                 <div key={sensor.deviceId} className="flex items-center gap-3 p-3 bg-white/5 rounded-xl border border-white/10 group hover:border-indigo-500/30 transition-all">
                   <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
                   <div className="flex-1">
