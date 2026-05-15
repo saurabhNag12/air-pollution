@@ -1,0 +1,6 @@
+{
+  "name": "Air Pollution Monitor",
+  "description": "A comprehensive IoT-based air quality monitoring system featuring real-time sensor data, analytics, and device management.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}

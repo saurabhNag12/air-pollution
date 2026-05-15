@@ -1,0 +1,19 @@
+service: pollution-monitor
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: ap-south-1 # Change this to your preferred region
+  environment:
+    MONGODB_URI: ${env:MONGODB_URI}
+
+functions:
+  pollutionHandler:
+    handler: src/services/lambdaSimulator.processPollutionData
+    events:
+      - iot:
+          sql: "SELECT * FROM 'airpollution/sensors/data'"
+          awsIotSqlVersion: "2016-03-23"
+
+plugins:
+  - serverless-plugin-typescript
